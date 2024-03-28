@@ -22,7 +22,7 @@ export const POST = async (request: any) => {
 
     await newUser.save();
     return NextResponse.json(
-      { msg: "User is ceated Successfully" },
+      { msg: "User is ceated Successfully", User: newUser },
       { status: 200 }
     );
   } catch (err) {

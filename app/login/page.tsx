@@ -5,8 +5,13 @@ import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 
 const Login = () => {
+  interface Data {
+    email: string;
+    password: string;
+  }
+
+  const [data, setData] = useState<Data>({ email: "", password: "" });
   const [customerror, setCustomerror] = useState();
-  const [data, setData] = useState({});
   const router = useRouter();
 
   const { data: userData, status: userSession } = useSession();

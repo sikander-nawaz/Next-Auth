@@ -3,10 +3,13 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 const Register = () => {
-  const [data, setData] = useState({});
+  interface Data {
+    email: string;
+    password: string;
+  }
+  const [data, setData] = useState<Data>({ email: "", password: "" });
   const [customError, SetCustomError] = useState();
   const router = useRouter();
 
@@ -26,15 +29,13 @@ const Register = () => {
       });
 
       const res = await response.json();
-      console.log(res.status);
+      console.log(res);
       if (response.status == 200) {
         router.push("/login");
       }
       if (response.status == 400) {
         SetCustomError(res.msg);
       }
-
-      alert("done");
     } catch (err) {
       console.log(err);
     }
