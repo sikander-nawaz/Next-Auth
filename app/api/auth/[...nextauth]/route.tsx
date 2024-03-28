@@ -38,8 +38,6 @@ export const authOptions: any = {
       clientId: process.env.GITHUB_ID ?? "",
       clientSecret: process.env.GITHUB_SECRET ?? "",
     }),
-    //GoogleProvider()
-    // ...any other provider hers
   ],
   callbacks: {
     async signIn({ user, account }: { user: AuthUser; account: Account }) {

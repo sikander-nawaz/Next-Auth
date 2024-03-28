@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const Register = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState({});
   const [customError, SetCustomError] = useState();
   const router = useRouter();
 
@@ -33,15 +33,15 @@ const Register = () => {
       if (response.status == 400) {
         SetCustomError(res.msg);
       }
+
+      alert("done");
     } catch (err) {
       console.log(err);
     }
   };
 
-  console.log("Data:", data);
-
   return (
-    <div className="flex min-h-screen flex-col  items-center justify-between p-24">
+    <div className="flex min-h-screen flex-col  items-center justify-between pt-20">
       <div className="border-2 border-gray-500 p-8 rounded-lg shadow-lg w-96">
         <h1 className="text-3xl text-center font-semibold mb-8">Register</h1>
 

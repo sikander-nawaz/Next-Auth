@@ -1,17 +1,54 @@
 "use client";
-
-import React, { useState } from "react";
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 
 const Login = () => {
-  const [data, setData] = useState();
-  const [customError, setCustomError] = useState();
+  const [customerror, setCustomerror] = useState();
+  const [data, setData] = useState({});
+  const router = useRouter();
+
+  const { data: userData, status: userSession } = useSession();
 
   const handleChange = (e: any) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  console.log("data", data);
+  useEffect(() => {
+    if (userSession == "authenticated") {
+      router.replace("/dashboard");
+    }
+  }, [userSession, router]);
+
+  const handleSubmit = async () => {
+    const email = data.email;
+    const password = data.password;
+
+    const response = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (response?.error) {
+      setCustomerror("Invalide user name and password");
+    } else {
+      console.log("else userdata>>", userData);
+      console.log("else userSession>>", userSession);
+      console.log("response>>", response);
+
+      setCustomerror("");
+    }
+  };
+
+  if (userSession == "loading") {
+    return (
+      <div>
+        <h1>....Loading</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col  items-center justify-between p-24">
@@ -19,6 +56,7 @@ const Login = () => {
         <h1 className="text-3xl text-center font-semibold mb-8">Sign In</h1>
 
         <input
+          type="text"
           name="email"
           className="w-full border border-gray-300 text-black rounded px-3 py-2 mb-4 focus:outline-none focus:border-blue-400 focus:text-black text-[18px]"
           placeholder="Email"
@@ -26,6 +64,7 @@ const Login = () => {
           onChange={handleChange}
         />
         <input
+          type="password"
           name="password"
           className="w-full border border-gray-300 text-black rounded px-3 py-2 focus:outline-none focus:border-blue-400 focus:text-black text-[18px]"
           placeholder="password"
@@ -34,20 +73,20 @@ const Login = () => {
         />
         <div className="text-center">
           <button
-            //   onClick={() => handleSubmit()}
+            onClick={() => handleSubmit()}
             className=" w-1/2 bg-blue-500 text-white  py-2 rounded hover:bg-blue-600 mt-6 text-[16px]"
           >
             Login
           </button>
           <div className="text-red-500 text-[16px] mb-4">
-            {customError && customError}
+            {customerror && customerror}
           </div>
         </div>
         <div className="flex justify-center items-center">
           <button
-            //   onClick={() => {
-            //     signIn("github");
-            //   }}
+            onClick={() => {
+              signIn("github");
+            }}
             className="bg-black text-white rounded-md p-4"
           >
             Github Login
