@@ -10,8 +10,16 @@ const Login = () => {
     password: string;
   }
 
+  interface LoginState {
+    error: string | null;
+    success: boolean;
+  }
+
   const [data, setData] = useState<Data>({ email: "", password: "" });
-  const [customerror, setCustomerror] = useState();
+  const [loginState, setLoginState] = useState<LoginState>({
+    error: null,
+    success: false,
+  });
   const router = useRouter();
 
   const { data: userData, status: userSession } = useSession();
@@ -37,23 +45,22 @@ const Login = () => {
     });
 
     if (response?.error) {
-      setCustomerror("Invalide user name and password");
+      setLoginState({ error: "Invalid username and password", success: false });
     } else {
-      console.log("else userdata>>", userData);
-      console.log("else userSession>>", userSession);
-      console.log("response>>", response);
-
-      setCustomerror("");
+      setLoginState({ error: null, success: true });
     }
   };
 
-  if (userSession == "loading") {
+  if (userSession === "loading") {
     return (
       <div>
         <h1>....Loading</h1>
       </div>
     );
   }
+
+  console.log("else userdata>>", userData);
+  console.log("else userSession>>", userSession);
 
   return (
     <div className="flex min-h-screen flex-col  items-center justify-between p-24">
@@ -79,13 +86,15 @@ const Login = () => {
         <div className="text-center">
           <button
             onClick={() => handleSubmit()}
-            className=" w-1/2 bg-blue-500 text-white  py-2 rounded hover:bg-blue-600 mt-6 text-[16px]"
+            className=" w-1/2 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 mt-6 mb-2 text-[16px]"
           >
             Login
           </button>
-          <div className="text-red-500 text-[16px] mb-4">
-            {customerror && customerror}
-          </div>
+          {loginState.error && (
+            <div className="text-red-500 text-[16px] mb-4">
+              {loginState.error}
+            </div>
+          )}
         </div>
         <div className="flex justify-center items-center">
           <button
