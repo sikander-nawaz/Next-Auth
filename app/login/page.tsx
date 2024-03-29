@@ -63,7 +63,7 @@ const Login = () => {
   console.log("else userSession>>", userSession);
 
   return (
-    <div className="flex min-h-screen flex-col  items-center justify-between p-24">
+    <div className="flex min-h-screen flex-col items-center justify-between p-12">
       <div className="border-2 border-gray-500 p-8 rounded-lg shadow-lg w-96">
         <h1 className="text-3xl text-center font-semibold mb-8">Sign In</h1>
 
